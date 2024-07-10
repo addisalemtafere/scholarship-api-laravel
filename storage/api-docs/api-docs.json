@@ -1,0 +1,705 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Your Application API",
+        "description": "API Documentation for Your Application",
+        "contact": {
+            "email": "admin@example.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register a new user",
+                "operationId": "8a56853624e025573120a09a4c75d468",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "role"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maxLength": 255
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 8
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "enum": [
+                                            "student",
+                                            "scholar_poster"
+                                        ]
+                                    },
+                                    "country": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "university": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "year_of_study": {
+                                        "type": "integer",
+                                        "minimum": 1
+                                    },
+                                    "gpa": {
+                                        "type": "number",
+                                        "maximum": 4,
+                                        "minimum": 0
+                                    },
+                                    "organization": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "website": {
+                                        "type": "string",
+                                        "format": "url",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully"
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": [
+                                                "error"
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Authenticate user and issue a Sanctum token",
+                "description": "Authenticate a user with email and password and issue a Sanctum token upon successful login",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "John Doe"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "format": "email",
+                                                            "example": "user@example.com"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "format": "date-time"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "format": "date-time"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "token": {
+                                                    "type": "string",
+                                                    "example": "sanctum_token_here"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "error": {
+                                            "type": "null"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid credentials"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/scholarships": {
+            "get": {
+                "tags": [
+                    "Scholarships"
+                ],
+                "summary": "Get all scholarships",
+                "description": "Display a listing of the scholarships.",
+                "operationId": "0ee5b3990cc5093347f3a22a8b655ef7",
+                "responses": {
+                    "200": {
+                        "description": "List of scholarships",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "eligibility": {
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "criteria": {
+                                                            "type": "string"
+                                                        },
+                                                        "minimum_gpa": {
+                                                            "type": "number"
+                                                        },
+                                                        "country": {
+                                                            "type": "string"
+                                                        },
+                                                        "experience": {
+                                                            "type": "integer"
+                                                        },
+                                                        "english_proficiency": {
+                                                            "type": "boolean"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Scholarships"
+                ],
+                "summary": "Create a new scholarship",
+                "description": "Create a new scholarship with eligibility criteria",
+                "operationId": "5264958941033b303a3899a554b81c21",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description",
+                                    "eligibility"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Scholarship Name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Scholarship Description"
+                                    },
+                                    "eligibility": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "criteria": {
+                                                    "type": "string",
+                                                    "example": "Eligibility Criteria"
+                                                },
+                                                "minimum_gpa": {
+                                                    "type": "number",
+                                                    "example": 3.5
+                                                },
+                                                "country": {
+                                                    "type": "string",
+                                                    "example": "Country Name"
+                                                },
+                                                "experience": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "english_proficiency": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Scholarship created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "eligibility": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "criteria": {
+                                                        "type": "string"
+                                                    },
+                                                    "minimum_gpa": {
+                                                        "type": "number"
+                                                    },
+                                                    "country": {
+                                                        "type": "string"
+                                                    },
+                                                    "experience": {
+                                                        "type": "integer"
+                                                    },
+                                                    "english_proficiency": {
+                                                        "type": "boolean"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/scholarships/{id}": {
+            "get": {
+                "tags": [
+                    "Scholarships"
+                ],
+                "summary": "Get a scholarship by ID",
+                "description": "Returns a specific scholarship by ID",
+                "operationId": "c9e1edea62c06b736dd146fc641ef730",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "eligibility": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "criteria": {
+                                                        "type": "string"
+                                                    },
+                                                    "minimum_gpa": {
+                                                        "type": "number"
+                                                    },
+                                                    "country": {
+                                                        "type": "string"
+                                                    },
+                                                    "experience": {
+                                                        "type": "integer"
+                                                    },
+                                                    "english_proficiency": {
+                                                        "type": "boolean"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Scholarship not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Scholarships"
+                ],
+                "summary": "Update a scholarship",
+                "description": "Update a scholarship with new details and eligibility criteria",
+                "operationId": "7b6d442d68145339fecf538f2657eb30",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description",
+                                    "eligibility"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Updated Scholarship Name"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Updated Scholarship Description"
+                                    },
+                                    "eligibility": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "criteria": {
+                                                    "type": "string",
+                                                    "example": "Updated Eligibility Criteria"
+                                                },
+                                                "minimum_gpa": {
+                                                    "type": "number",
+                                                    "example": 3.7
+                                                },
+                                                "country": {
+                                                    "type": "string",
+                                                    "example": "Updated Country Name"
+                                                },
+                                                "experience": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                },
+                                                "english_proficiency": {
+                                                    "type": "boolean",
+                                                    "example": false
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Scholarship updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "eligibility": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "criteria": {
+                                                        "type": "string"
+                                                    },
+                                                    "minimum_gpa": {
+                                                        "type": "number"
+                                                    },
+                                                    "country": {
+                                                        "type": "string"
+                                                    },
+                                                    "experience": {
+                                                        "type": "integer"
+                                                    },
+                                                    "english_proficiency": {
+                                                        "type": "boolean"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Scholarship not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Scholarships"
+                ],
+                "summary": "Delete a scholarship",
+                "description": "Delete a specific scholarship by ID",
+                "operationId": "3281ceed0af7363b2bd804cfab8d0244",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Scholarship deleted successfully"
+                    },
+                    "404": {
+                        "description": "Scholarship not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Scholarships",
+            "description": "Scholarships"
+        }
+    ]
+}
